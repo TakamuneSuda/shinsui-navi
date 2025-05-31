@@ -35,5 +35,10 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.1.8",
+		"svelte-maplibre-gl": "^0.1.8",
+		"tailwindcss": "^4.1.8"
 	}
 }

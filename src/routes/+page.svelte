@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import Sidebar from './sidebar/Sidebar.svelte';
+	import Map from './Map.svelte';
+</script>
+
+<div class="h-screen w-screen flex">
+	<div class="w-[300px] h-full">
+		<Sidebar />
+	</div>
+	<div class="flex-1 h-full">
+		<Map />
+	</div>
+</div>
