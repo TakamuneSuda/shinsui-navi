@@ -1,9 +1,45 @@
 <script lang="ts">
-	import { MapLibre, NavigationControl, ScaleControl, GlobeControl, GeoJSONSource, CircleLayer, SymbolLayer } from 'svelte-maplibre-gl';
+	import {
+		MapLibre,
+		NavigationControl,
+		ScaleControl,
+		GlobeControl,
+		GeoJSONSource,
+		CircleLayer,
+		SymbolLayer
+	} from 'svelte-maplibre-gl';
+	import { getRiverContext } from '$lib/context/riverContext';
+	import { layers } from '$lib/layers';
 
-	  let cluster = $state(true);
-		let clusterMaxZoom = $state(10);
-		let clusterRadius = $state(50);
+	// Context APIからデータを取得
+	const riverContext = getRiverContext();
+
+	let cluster = $state(true);
+	let clusterMaxZoom = $state(10);
+	let clusterRadius = $state(50);
+
+	// 表示可能な全ての河川のリストを生成
+	let allRivers = $derived(
+		Object.entries(layers).flatMap(([categoryName, category]) =>
+			Object.entries(category).flatMap(([prefectureName, prefecture]) =>
+				Object.entries(prefecture).flatMap(([scaleName, rivers]) =>
+					rivers.map((river) => ({
+						id: `${categoryName}-${prefectureName}-${scaleName}-${river}`,
+						category: categoryName,
+						prefecture: prefectureName,
+						scale: scaleName,
+						river: river,
+						url: `https://d35i4h3qfw3o9a.cloudfront.net/${encodeURIComponent(categoryName)}/${encodeURIComponent(prefectureName)}/${encodeURIComponent(scaleName)}/${encodeURIComponent(river)}.geojson`
+					}))
+				)
+			)
+		)
+	);
+
+	// 表示する河川をフィルタリング
+	let visibleRivers = $derived(
+		allRivers.filter((river) => riverContext.visibleLayers.has(river.id))
+	);
 </script>
 
 <MapLibre
@@ -16,35 +52,47 @@
 	<ScaleControl />
 	<GlobeControl />
 
-	<GeoJSONSource
-		id="japan-rivers"
-		data="https://d35i4h3qfw3o9a.cloudfront.net/県単位/岩手/計画規模/安家川.geojson"
-		{cluster}
-		clusterMaxZoom={cluster ? clusterMaxZoom : undefined}
-		clusterRadius={cluster ? clusterRadius : undefined}
-	>
-    <CircleLayer
-      filter={['has', 'point_count']}
-      paint={{
-        'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 50, '#f1f075', 150, '#f28cb1'],
-        'circle-radius': ['+', 10, ['sqrt', ['get', 'point_count']]],
-        'circle-opacity': 0.8
-      }}
-    />
-    <SymbolLayer
-      filter={['has', 'point_count']}
-      layout={{
-        'text-field': '{point_count_abbreviated}',
-        'text-size': 12
-      }}
-    />
-    <CircleLayer
-      filter={['!', ['has', 'point_count']]}
-      paint={{
-        'circle-color': '#ffff00',
-        'circle-radius': 10
-      }}
-    />
-	</GeoJSONSource>
-	
+	{#each visibleRivers as riverData (riverData.id)}
+		<GeoJSONSource
+			id={riverData.id}
+			data={riverData.url}
+			{cluster}
+			clusterMaxZoom={cluster ? clusterMaxZoom : undefined}
+			clusterRadius={cluster ? clusterRadius : undefined}
+		>
+			<CircleLayer
+				filter={['has', 'point_count']}
+				paint={{
+					'circle-color': [
+						'step',
+						['get', 'point_count'],
+						'#51bbd6',
+						50,
+						'#f1f075',
+						150,
+						'#f28cb1'
+					],
+					'circle-radius': ['+', 10, ['sqrt', ['get', 'point_count']]],
+					'circle-opacity': 0.8
+				}}
+			/>
+			<SymbolLayer
+				filter={['has', 'point_count']}
+				layout={{
+					'text-field': '{point_count_abbreviated}',
+					'text-size': 12
+				}}
+			/>
+			<CircleLayer
+				filter={['!', ['has', 'point_count']]}
+				paint={{
+					'circle-color': '#3b82f6',
+					'circle-radius': 6,
+					'circle-opacity': 0.8,
+					'circle-stroke-width': 2,
+					'circle-stroke-color': '#ffffff'
+				}}
+			/>
+		</GeoJSONSource>
+	{/each}
 </MapLibre>

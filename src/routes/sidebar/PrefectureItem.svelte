@@ -1,11 +1,18 @@
 <script lang="ts">
 	import ScaleItem from './ScaleItem.svelte';
 
-	export let prefectureName: string;
-	export let prefecture: Record<string, string[]>;
-	export let category: string = '';
+	// Svelte 5のrunesモードでpropsを定義
+	let {
+		prefectureName,
+		prefecture,
+		category = ''
+	}: {
+		prefectureName: string;
+		prefecture: Record<string, string[]>;
+		category?: string;
+	} = $props();
 
-	let isExpanded = false;
+	let isExpanded = $state(false);
 
 	function toggleExpanded() {
 		isExpanded = !isExpanded;
@@ -15,7 +22,7 @@
 <div class="mb-2">
 	<button
 		class="w-full text-left p-2 font-medium bg-blue-50 hover:bg-blue-100 rounded flex items-center justify-between"
-		on:click={toggleExpanded}
+		onclick={toggleExpanded}
 	>
 		<span>{prefectureName}</span>
 		<span class="text-sm">
