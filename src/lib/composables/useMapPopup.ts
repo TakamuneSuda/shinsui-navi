@@ -7,7 +7,7 @@ import maplibregl from 'maplibre-gl';
  * マップポップアップの状態管理カスタムフック
  */
 export function createMapPopupManager() {
-	let popupState = $state<MapPopupState>({
+	const popupState = $state<MapPopupState>({
 		feature: null,
 		riverData: null,
 		lnglat: null,
@@ -72,7 +72,7 @@ export function createMapPopupManager() {
 	/**
 	 * ポップアップが表示されているかどうか
 	 */
-	let isPopupVisible = $derived(
+	const isPopupVisible = $derived(
 		popupState.feature !== null && popupState.lnglat !== null && popupState.riverData !== null
 	);
 
