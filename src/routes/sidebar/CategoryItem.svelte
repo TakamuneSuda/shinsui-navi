@@ -83,7 +83,7 @@
 	}
 
 	.expandable-content.expanded {
-		max-height: 2000px;
+		max-height: 10000px;
 		transition: max-height 0.3s ease-in;
 	}
 </style>
