@@ -26,7 +26,6 @@
 	function handleRiverClick() {
 		riverContext.selectRiver(category, prefecture, scale, river);
 		riverContext.toggleLayerVisibility(layerId);
-		console.log(`川を選択: ${river} (${prefecture} - ${scale})`);
 	}
 </script>
 

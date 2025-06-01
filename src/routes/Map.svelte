@@ -87,7 +87,6 @@
 	// ホバーイベントハンドラー
 	function handleMouseMove(event: MapLayerMouseEvent, riverData: RiverData) {
 		const feature = event.features?.[0];
-		console.log('Mouse move feature:', feature);
 		if (feature) {
 			popupFeature = feature;
 			popupRiverData = riverData;
@@ -215,7 +214,7 @@
 			closeOnClick={isClicked}
 			onclose={closePopup}
 		>
-			<div class="p-3 min-w-[200px] bg-white rounded shadow-lg relative">
+			<div class="p-3 min-w-[200px] bg-white rounded relative">
 				<!-- 閉じるボタン -->
 				<button
 					class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"

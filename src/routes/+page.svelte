@@ -47,7 +47,7 @@
 </script>
 
 <div class="h-screen w-screen flex">
-	<div class="w-[300px] h-full">
+	<div class="w-[250px] h-full">
 		<Sidebar />
 	</div>
 	<div class="flex-1 h-full">
