@@ -1,11 +1,8 @@
 <script lang="ts">
 	import Sidebar from './sidebar/Sidebar.svelte';
 	import Map from './Map.svelte';
-	import {
-		setRiverContext,
-		type SelectedRiver,
-		type RiverContextValue
-	} from '$lib/context/riverContext';
+	import { setRiverContext, type RiverContextValue } from '$lib/context/riverContext';
+	import type { SelectedRiver } from '$lib/types';
 
 	// Context Providerを作成
 	let selectedRiver = $state<SelectedRiver | null>(null);

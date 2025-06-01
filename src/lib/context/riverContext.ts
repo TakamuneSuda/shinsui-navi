@@ -1,11 +1,7 @@
 import { getContext, setContext } from 'svelte';
+import type { SelectedRiver } from '$lib/types';
 
-export interface SelectedRiver {
-	category: string;
-	prefecture: string;
-	scale: string;
-	river: string;
-}
+export type { SelectedRiver } from '$lib/types';
 
 export interface RiverContextValue {
 	selectedRiver: SelectedRiver | null;
